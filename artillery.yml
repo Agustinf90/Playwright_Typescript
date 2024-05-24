@@ -1,0 +1,9 @@
+config:
+  target: https://upload.uploadcare.com/base/
+  # Enable the Playwright engine:
+  engines:
+    playwright: {}
+  processor: "./js-tests/commands/test2.js"
+scenarios:
+  - engine: playwright
+    testFunction: "uploadFileTest"  # Cambia "helloFlow" a "uploadFileTest"
