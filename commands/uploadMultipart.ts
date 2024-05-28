@@ -23,6 +23,5 @@ export async function uploadMultipartFile(apiContext1: any) {
   });
 
   const responseJson = await response.json();
-  console.log('Respuesta de la API:', responseJson);
   return response;
 }

@@ -4,7 +4,7 @@
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
-    "outDir": "js-tests",
+    "outDir": "loadTests",
     "rootDir": "."
   },
   "include": ["commands/**/*", "config/**/*"],

@@ -10,8 +10,13 @@
   "devDependencies": {
     "@playwright/test": "^1.44.1",
     "@types/node": "^20.12.12",
+    "allure-commandline": "^2.29.0",
+    "allure-playwright": "^2.15.1",
     "artillery": "^2.0.12",
+    "axios": "^1.7.2",
     "dotenv": "^16.4.5",
+    "form-data": "^4.0.0",
+    "rimraf": "^5.0.7",
     "typescript": "^5.4.5"
   }
 }

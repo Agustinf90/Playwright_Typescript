@@ -1,0 +1,11 @@
+config:
+  target: "https://upload.uploadcare.com/base/"
+  phases:
+    - duration: 5
+      arrivalRate: 5
+  processor: './loadTests/uploadFile.js'
+
+scenarios:
+  - name: "Scenario 2"
+    flow:
+      - function: "uploadFile"

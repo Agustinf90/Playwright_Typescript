@@ -2,13 +2,17 @@ import { request, APIRequestContext, test as base, expect } from '@playwright/te
 
 
 interface MyAPIRequestContext extends APIRequestContext {
+  get: (url: string, options?: object) => Promise<any>; 
   post: (url: string, options?: object) => Promise<any>; 
+  put: (url: string, options?: object) => Promise<any>; 
+  delete: (url: string, options?: object) => Promise<any>; 
 }
 
 
 type MyFixtures = {
   apiContext1: MyAPIRequestContext; 
   apiContext2: MyAPIRequestContext; 
+  apiContext3: MyAPIRequestContext; 
 };
 
 
@@ -28,6 +32,14 @@ const test = base.extend<MyFixtures>({
 
     await use(apiContext2);
     await apiContext2.dispose();
+  },
+  apiContext3: async ({}, use) => {
+    const apiContext3 = await request.newContext({
+      baseURL: 'https://automationexercise.com/',
+    });
+
+    await use(apiContext3);
+    await apiContext3.dispose();
   },
 });
 export { test, expect };

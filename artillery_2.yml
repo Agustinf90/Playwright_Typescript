@@ -1,0 +1,9 @@
+config:
+  target: "https://api.sirv.com/v2/token"
+  phases:
+    - duration: 2
+      arrivalRate: 2
+  processor: './loadTests/getToken.js'
+scenarios:
+  - flow:
+      - function: "getToken"
