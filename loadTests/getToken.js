@@ -24,3 +24,5 @@ async function getToken() {
 getToken().then(token => {
 }).catch(error => {
 });
+module.exports = { getToken };
+
