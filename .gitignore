@@ -3,5 +3,6 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-artillery.yml
-package-lock.json
+/artillery.yml
+/package-lock.json
+/art1.yml

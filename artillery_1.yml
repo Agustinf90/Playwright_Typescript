@@ -4,7 +4,22 @@ config:
     - duration: 5
       arrivalRate: 5
   processor: './loadTests/uploadFile.js'
-
+  defaults:
+    headers:
+      content-type: "application/json"
+  metrics:
+    aggregation: "p95,p99,min,max,median,mean,stddev"
+    detailed: true
+  plugins:
+    metrics-by-endpoint:
+      config:
+        - name: "all responses"
+          type: "http.response_time"
+          threshold: 10
+        - name: "successful responses"
+          type: "http.response_code"
+          code: 200
+    expect: {}
 scenarios:
   - name: "Scenario 2"
     flow:

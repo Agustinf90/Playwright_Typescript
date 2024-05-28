@@ -4,6 +4,13 @@ config:
     - duration: 2
       arrivalRate: 2
   processor: './loadTests/getToken.js'
+  defaults:
+    headers:
+      content-type: "application/json"
+  metrics:
+    aggregation: "p95,p99,min,max,median,mean,stddev"
+    detailed: true
+
 scenarios:
   - flow:
       - function: "getToken"

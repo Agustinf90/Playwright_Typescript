@@ -2,9 +2,10 @@ const axios = require('axios');
 const FormData = require('form-data');
 const fs = require('fs');
 
-async function uploadFile(file, image) {
+async function uploadFile() {
   try {
     const url = 'https://upload.uploadcare.com/base/'; // URL del endpoint de carga
+    const file = './utils/notice3.png'; // Ruta al archivo a cargar
 
     // Configurar los datos del formulario
     const formData = new FormData();
@@ -35,9 +36,7 @@ async function uploadFile(file, image) {
 }
 
 // Uso de la función de carga de archivos
-const file = './utils/notice3.png'; // Ruta al archivo a cargar
-const image = fs.readFileSync(file); // Lee el archivo como un búfer
-uploadFile(file, image)
+uploadFile()
   .then((data) => {
     // Manejo de la respuesta
     console.log('Response:', data);
@@ -46,3 +45,5 @@ uploadFile(file, image)
     // Manejo de errores
     console.error('Error:', error);
   });
+
+module.exports = { uploadFile };
