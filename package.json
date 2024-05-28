@@ -20,8 +20,5 @@
     "form-data": "^4.0.0",
     "rimraf": "^5.0.7",
     "typescript": "^5.4.5"
-  },
-  "dependencies": {
-    "artillery-core": "^4.8.1"
   }
 }
