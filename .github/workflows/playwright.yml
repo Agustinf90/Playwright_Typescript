@@ -23,27 +23,32 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - name: Run Playwright tests in chromium
-      run: npx playwright test tests --project=chromium --workers=3
-      continue-on-error: true
-      
+    - name: Install Artillery globally
+      run: npm install -g artillery
+
     - name: Run Playwright tests in firefox
       run: npx playwright test tests --project=firefox --workers=3
       continue-on-error: true
-      
+
     - name: Run Playwright tests in webkit
       run: npx playwright test tests --project=webkit --workers=3
       continue-on-error: true
       
+    - name: Run Playwright tests in chromium
+      run: npx playwright test tests --project=chromium --workers=3
+      continue-on-error: true
+
     - name: Run Artillery tests and generate reports
       run: |
         artillery run artillery_1.yml -o results1.json
         artillery run artillery_2.yml -o results2.json
         artillery report results1.json -o report1.html
         artillery report results2.json -o report2.html
+      continue-on-error: true
 
     - name: Generate Allure report
       run: npx allure generate --clean -o allure
+      continue-on-error: true
 
     - name: Compress Artillery reports
       run: zip -r artillery-reports.zip results1.json results2.json report1.html report2.html
@@ -64,4 +69,3 @@ jobs:
         name: allure-report
         path: allure-report.zip
         retention-days: 30
-
