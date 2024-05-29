@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import config from '../config/config';
 
 export async function uploadMultipartFile(apiContext1: any) {
   const file = path.resolve('./utils/notice3.png');
@@ -12,7 +13,7 @@ export async function uploadMultipartFile(apiContext1: any) {
       ContentType: "multipart/form-data",
     },
     multipart: {
-      UPLOADCARE_PUB_KEY: '6a56702149520ae291c3',
+      UPLOADCARE_PUB_KEY: config.PUBLIC_KEY,
       file: {
         name: file,
         mimeType: "image/png",

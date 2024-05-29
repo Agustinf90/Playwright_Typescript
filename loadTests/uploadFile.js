@@ -1,6 +1,7 @@
 const axios = require('axios');
 const FormData = require('form-data');
 const fs = require('fs');
+const config = require('../config/config.js'); 
 
 async function uploadFile() {
   try {
@@ -9,7 +10,7 @@ async function uploadFile() {
 
     // Configurar los datos del formulario
     const formData = new FormData();
-    formData.append('UPLOADCARE_PUB_KEY', '6a56702149520ae291c3');
+    formData.append('UPLOADCARE_PUB_KEY', config.PUBLIC_KEY);
     formData.append('file', fs.createReadStream(file), {
       filename: file,
       contentType: 'image/png', // Tipo MIME de la imagen (ajustar según sea necesario)
