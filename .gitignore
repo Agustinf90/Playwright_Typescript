@@ -6,3 +6,4 @@ node_modules/
 /artillery.yml
 /package-lock.json
 /art1.yml
+/.env

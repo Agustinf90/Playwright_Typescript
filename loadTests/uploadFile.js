@@ -5,27 +5,24 @@ const config = require('../config/config.js');
 
 async function uploadFile() {
   try {
-    const url = 'https://upload.uploadcare.com/base/'; // URL del endpoint de carga
-    const file = './utils/notice3.png'; // Ruta al archivo a cargar
+    const url = 'https://upload.uploadcare.com/base/'; 
+    const file = './utils/notice3.png'; 
 
-    // Configurar los datos del formulario
     const formData = new FormData();
     formData.append('UPLOADCARE_PUB_KEY', config.PUBLIC_KEY);
     formData.append('file', fs.createReadStream(file), {
       filename: file,
-      contentType: 'image/png', // Tipo MIME de la imagen (ajustar según sea necesario)
+      contentType: 'image/png', 
     });
     formData.append('title', 'Logo of Business');
 
-    // Configurar las opciones de la solicitud
     const options = {
       headers: {
-        ...formData.getHeaders(), // Obtiene los encabezados del formulario
+        ...formData.getHeaders(),
         Accept: '*/*',
       },
     };
 
-    // Realizar la solicitud POST
     const response = await axios.post(url, formData, options);
     console.log('Upload successful:', response.data);
 
@@ -36,14 +33,11 @@ async function uploadFile() {
   }
 }
 
-// Uso de la función de carga de archivos
 uploadFile()
   .then((data) => {
-    // Manejo de la respuesta
     console.log('Response:', data);
   })
   .catch((error) => {
-    // Manejo de errores
     console.error('Error:', error);
   });
 

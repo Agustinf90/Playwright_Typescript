@@ -1,5 +1,3 @@
-import fs from "fs";
-import path from "path";
 
 export async function createAccount(apiContext3: any) {
   const url = '/api/createAccount?';
