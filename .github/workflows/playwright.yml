@@ -25,7 +25,23 @@ jobs:
 
     - name: Install Artillery globally
       run: npm install -g artillery
-
+      
+    - name: Create .env file
+      run: |
+          echo "email=${{ secrets.EMAIL }}" > .env
+          echo "password=${{ secrets.PASSWORD }}" >> .env
+          echo "emailInvalid=${{ secrets.EMAIL_INVALID }}" >> .env
+          echo "passwordInvalid=${{ secrets.PASSWORD_INVALID }}" >> .env
+          echo "url=${{ secrets.URL }}" >> .env
+          echo "name=${{ secrets.NAME }}" >> .env
+          echo "emailNew=${{ secrets.EMAILNEW }}" >> .env
+          echo "subject=${{ secrets.SUBJECT }}" >> .env
+          echo "message=${{ secrets.MESSAGE }}" >> .env
+          echo "clientId=${{ secrets.CLIENTID }}" >> .env
+          echo "clientSecret=${{ secrets.CLIENTSECRET }}" >> .env
+          echo "TOKEN=${{ secrets.TOKEN }}" >> .env
+          echo "PUBLIC_KEY=${{ secrets.PUBLIC_KEY }}" >> .env
+          
     - name: Run Playwright initial test 
       run:
           npx playwright test tests/api/initial_Test.spec.ts
