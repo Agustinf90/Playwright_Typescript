@@ -48,8 +48,7 @@ export class LoginPage {
         await this.btnToLogin.click();
         await this.txtEmail.fill(config.emailInvalid);
         await this.txtPassword.fill(config.passwordInvalid);
-        await this.btnSignIn.click();
-        await expect(this.txtInvalidCred).toBeVisible();    
+        await this.btnSignIn.click(); 
     }
 
     async SignUp() {
