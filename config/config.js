@@ -12,7 +12,8 @@ const config = {
     message: process.env.message || '',
     TOKEN: process.env.TOKEN || '',
     clientId: process.env.clientId || '',
-    clientSecret: process.env.clientSecret || ''
+    clientSecret: process.env.clientSecret || '',
+    PUBLIC_KEY: process.env.PUBLIC_KEY || ''
 };
 
 module.exports = config;
