@@ -1,10 +1,6 @@
-import fs from "fs";
-import path from "path";
+
 import config from '../config/config';
 export async function searchFile(apiContext2: any) {
-
-  const file = path.resolve('./utils/notice3.png');
-  const image = fs.readFileSync(file);
 
   const url = 'v2/files/search';
 
