@@ -30,8 +30,8 @@ jobs:
       run: |
           echo "email=${{ secrets.EMAIL }}" > .env
           echo "password=${{ secrets.PASSWORD }}" >> .env
-          echo "emailInvalid=${{ secrets.EMAIL_INVALID }}" >> .env
-          echo "passwordInvalid=${{ secrets.PASSWORD_INVALID }}" >> .env
+          echo "emailInvalid=${{ secrets.EMAILINVALID }}" >> .env
+          echo "passwordInvalid=${{ secrets.PASSWORDINVALID }}" >> .env
           echo "url=${{ secrets.URL }}" >> .env
           echo "name=${{ secrets.NAME }}" >> .env
           echo "emailNew=${{ secrets.EMAILNEW }}" >> .env
