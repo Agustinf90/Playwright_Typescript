@@ -1,0 +1,51 @@
+{
+	"info": {
+		"_postman_id": "b4df8ed7-0279-42b5-8da9-45e53029e4ec",
+		"name": "test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20024829",
+		"_collection_link": "https://red-shuttle-428052.postman.co/workspace/UL~e82ed90d-5f91-41e3-a423-058bcf75c15f/collection/20024829-b4df8ed7-0279-42b5-8da9-45e53029e4ec?action=share&source=collection_link&creator=20024829"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "testFile.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://di-documentapi-dev.azurewebsites.net/api/Documents/2e4dfaff-5b11-4689-89ee-c39539f77453/upload",
+					"protocol": "https",
+					"host": [
+						"di-documentapi-dev",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"Documents",
+						"2e4dfaff-5b11-4689-89ee-c39539f77453",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "file",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
