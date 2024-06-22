@@ -7,8 +7,8 @@ on:
     branches: [ main, master ]
 
 jobs:
-name: Postman Tests
-    needs: [ playwright-postman-job ]
+  postman-tests:
+    name: Postman Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,12 +17,9 @@ name: Postman Tests
       - name: Install Newman
         run: npm install -g newman
 
-
       - name: Run Postman collections
         run: |
-          for file in apps/chatbot-api-e2e/Postman/*.json; do
-            newman run "$file"
-          done
+          newman run DEMO__COLLECTION.postman_collection.json
 
   # test:
   #   timeout-minutes: 60
@@ -107,4 +104,4 @@ name: Postman Tests
   #     with:
   #       name: allure-report
   #       path: allure-report.zip
-        retention-days: 30
+    #      retention-days: 30
