@@ -1,0 +1,3615 @@
+{
+	"info": {
+		"_postman_id": "d958a8d7-b776-4e6d-ae11-2c21656c2dff",
+		"name": "DEMO COLLECTION",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35064567"
+	},
+	"item": [
+		{
+			"name": "Document",
+			"item": [
+				{
+					"name": "CREATE Document",
+					"item": [
+						{
+							"name": "TC_001 - Verify user creates document with valid data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields - documentId and status\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.documentId).to.exist;\r",
+											"    pm.expect(responseData.status).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"DocumentId is a non-empty string\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData.documentId).to.be.a('string').and.to.have.lengthOf.at.least(1);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status is a valid status value\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  pm.expect(responseData.status).to.contain('Success');\r",
+											"  pm.expect(responseData.status).to.exist;\r",
+											"});\r",
+											"\r",
+											"var responseBody = pm.response.text()\r",
+											"var jsonData = JSON.parse(responseBody)\r",
+											"pm.collectionVariables.set(\"createdDocumentID\", jsonData.documentId)\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"fileName\": \"{{$randomFileName}}\",\n  \"fileType\": \"PDF\",\n  \"fileEncoding\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_002 - Verify user creates no document with missing filename",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											"",
+											"pm.test(\"FileName error is recieved\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.errors.FileName).to.contain(\"The FileName field is required.\")",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n//   \"fileName\": \"{{$randomFileName}}\",\n  \"fileType\": \"PDF\",\n  \"fileEncoding\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_003 - Verify user creates no document with missing file encoding",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											"",
+											"pm.test(\"FileEncoding error is recieved\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.errors.FileEncoding).to.contain(\"The FileEncoding field is required.\")",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"fileName\": \"{{$randomFileName}}\",\n  \"fileType\": \"PDF\"\n//   \"fileEncoding\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_004 - Verify user creates no document with invalid user ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"INVALID\",\n  \"fileName\": \"{{$randomFileName}}\",\n  \"fileType\": \"PDF\",\n  \"fileEncoding\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_005 - Verify user creates no document with invalid file type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"fileName\": \"{{$randomFileName}}\",\n  \"fileType\": \"INVALID\",\n  \"fileEncoding\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_006 - Verify user creates no document with invalid HTTP method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {",
+											"    pm.expect(pm.response.code).to.equal(405);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"fileName\": \"{{$randomFileName}}\",\n  \"fileType\": \"PDF\",\n  \"fileEncoding\": \"string\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET Document",
+					"item": [
+						{
+							"name": "TC_001 - Verify user receives expected document by its ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"  pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"DocumentId corresponds with the createdDocumentID\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.document.id).to.contain(pm.collectionVariables.get(\"createdDocumentID\"))",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_002 - Verify user receives no document with non existent ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {",
+											"  pm.expect(pm.response.code).to.equal(404);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields - status and document\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData).to.have.property('status');",
+											"    pm.expect(responseData).to.have.property('document');",
+											"});",
+											"",
+											"pm.test(\"Status should be NotFound\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.status).to.contain('NotFound');",
+											"});",
+											"",
+											"pm.test(\"Document should be null\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.document).to.be.null;",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{nonValidDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{nonValidDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_004 - Verify user receives no document with invalid ID format",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"  pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											"",
+											"pm.test(\"documentId error is recieved\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.errors.documentId).to.contain(\"The value 'INVALID' is not valid.\")",
+											"});",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/INVALID",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"INVALID"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_004 - Verify user receives no document with invalid ID format Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {",
+											"  pm.expect(pm.response.code).to.equal(405);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET DocumentS",
+					"item": [
+						{
+							"name": "TC_001 - Verify user receives all documents without pagination parameters",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.documents).to.be.an('array');",
+											"    ",
+											"    responseData.documents.forEach(function(document) {",
+											"        pm.expect(document).to.have.property('id');",
+											"        pm.expect(document).to.have.property('userId');",
+											"        pm.expect(document).to.have.property('fileName');",
+											"        pm.expect(document).to.have.property('contentType');",
+											"        pm.expect(document).to.have.property('fileType');",
+											"        pm.expect(document).to.have.property('fileEncoding');",
+											"        pm.expect(document).to.have.property('blobStorageReference');",
+											"        pm.expect(document).to.have.property('metadata');",
+											"        pm.expect(document).to.have.property('createdAt');",
+											"        pm.expect(document).to.have.property('updatedAt');",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Status is a valid status value\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.status).to.contain('Success');",
+											"  pm.expect(responseData.status).to.exist;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "take",
+											"value": "5",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_002 - Verify user receives correct documents with only valid skip parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.documents).to.be.an('array');",
+											"    ",
+											"    responseData.documents.forEach(function(document) {",
+											"        pm.expect(document).to.have.property('id');",
+											"        pm.expect(document).to.have.property('userId');",
+											"        pm.expect(document).to.have.property('fileName');",
+											"        pm.expect(document).to.have.property('contentType');",
+											"        pm.expect(document).to.have.property('fileType');",
+											"        pm.expect(document).to.have.property('fileEncoding');",
+											"        pm.expect(document).to.have.property('blobStorageReference');",
+											"        pm.expect(document).to.have.property('metadata');",
+											"        pm.expect(document).to.have.property('createdAt');",
+											"        pm.expect(document).to.have.property('updatedAt');",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Status is a valid status value\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.status).to.contain('Success');",
+											"  pm.expect(responseData.status).to.exist;",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/?skip=1",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "5",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_003 - Verify user receives correct documents with only valid take parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.documents).to.be.an('array');",
+											"    ",
+											"    responseData.documents.forEach(function(document) {",
+											"        pm.expect(document).to.have.property('id');",
+											"        pm.expect(document).to.have.property('userId');",
+											"        pm.expect(document).to.have.property('fileName');",
+											"        pm.expect(document).to.have.property('contentType');",
+											"        pm.expect(document).to.have.property('fileType');",
+											"        pm.expect(document).to.have.property('fileEncoding');",
+											"        pm.expect(document).to.have.property('blobStorageReference');",
+											"        pm.expect(document).to.have.property('metadata');",
+											"        pm.expect(document).to.have.property('createdAt');",
+											"        pm.expect(document).to.have.property('updatedAt');",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Status is a valid status value\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.status).to.contain('Success');",
+											"  pm.expect(responseData.status).to.exist;",
+											"});",
+											"",
+											"pm.test(\"Length of documents array matches the 'take' parameter\", function () {",
+											"    const responseData = pm.response.json();",
+											"    const takeValue = pm.request.url.query.get('take');",
+											"    pm.expect(responseData.documents.length).to.equal(parseInt(takeValue));",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/?take=2",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "take",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_004 - Verify user receives correct documents with valid skip and take parameters",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.documents).to.be.an('array');",
+											"    ",
+											"    responseData.documents.forEach(function(document) {",
+											"        pm.expect(document).to.have.property('id');",
+											"        pm.expect(document).to.have.property('userId');",
+											"        pm.expect(document).to.have.property('fileName');",
+											"        pm.expect(document).to.have.property('contentType');",
+											"        pm.expect(document).to.have.property('fileType');",
+											"        pm.expect(document).to.have.property('fileEncoding');",
+											"        pm.expect(document).to.have.property('blobStorageReference');",
+											"        pm.expect(document).to.have.property('metadata');",
+											"        pm.expect(document).to.have.property('createdAt');",
+											"        pm.expect(document).to.have.property('updatedAt');",
+											"    });",
+											"});",
+											"",
+											"pm.test(\"Status is a valid status value\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.status).to.contain('Success');",
+											"  pm.expect(responseData.status).to.exist;",
+											"});",
+											"",
+											"pm.test(\"Length of documents array matches the 'take' parameter\", function () {",
+											"    const responseData = pm.response.json();",
+											"    const takeValue = pm.request.url.query.get('take');",
+											"    pm.expect(responseData.documents.length).to.equal(parseInt(takeValue));",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/?skip=1&take=2",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_005 - Verify user receives no documents with only invalid skip parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"skip error is received\", function () {",
+											"    const responseData = pm.response.json();",
+											"    const skipValue = pm.request.url.query.get('skip');",
+											"    pm.expect(responseData.errors.skip).to.include(`The value '${skipValue}' is not valid.`);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/?skip=invalid",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "invalid"
+										},
+										{
+											"key": "take",
+											"value": "2",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_006 - Verify user receives no documents with only invalid take parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"take error is received\", function () {",
+											"    const responseData = pm.response.json();",
+											"    const takeValue = pm.request.url.query.get('take');",
+											"    pm.expect(responseData.errors.take).to.include(`The value '${takeValue}' is not valid.`);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/?take=invalid",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "take",
+											"value": "invalid"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_007 - Verify user receives no documents with invalid skip and valid take parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/?skip=invalid&take=2",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "invalid"
+										},
+										{
+											"key": "take",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_008 - Verify user receives no documents with invalid take and valid skip parameter",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/?skip=1&take=invalid",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "invalid"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_009 - Verify user receives no documents when skip parameter exceeds total count",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields - documents, status, and total\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.documents).to.exist;",
+											"    pm.expect(responseData.status).to.exist;",
+											"    pm.expect(responseData.total).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Documents array is present and empty\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.documents).to.exist.and.to.be.an('array').that.is.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Total is 0\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.total).to.be.a('number');",
+											"    pm.expect(responseData.total).to.be.eq(0);",
+											"});",
+											"",
+											"pm.test(\"Status is a valid status value\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.status).to.contain('NotFound');",
+											"  pm.expect(responseData.status).to.exist;",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/?skip=1000",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "1000"
+										},
+										{
+											"key": "take",
+											"value": "2",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_010 - Verify user receives no documents when take parameter is 0",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {",
+											"    pm.response.to.have.status(404);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields - documents, status, and total\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.documents).to.exist;",
+											"    pm.expect(responseData.status).to.exist;",
+											"    pm.expect(responseData.total).to.exist;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Documents array is present and empty\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.documents).to.exist.and.to.be.an('array').that.is.empty;",
+											"});",
+											"",
+											"",
+											"pm.test(\"Total is 0\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.total).to.be.a('number');",
+											"    pm.expect(responseData.total).to.be.eq(0);",
+											"});",
+											"",
+											"pm.test(\"Status is a valid status value\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.status).to.contain('NotFound');",
+											"  pm.expect(responseData.status).to.exist;",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/?take=0",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "1000",
+											"disabled": true
+										},
+										{
+											"key": "take",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_011 - Verify user receives no documents with invalid HTTP method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {",
+											"    pm.response.to.have.status(405);",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/?skip=1&take=2",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									],
+									"query": [
+										{
+											"key": "skip",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "UPLOAD Document",
+					"item": [
+						{
+							"name": "TC_001 - Verify user uploads document with valid data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"  pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('userId');",
+											"    pm.expect(responseData).to.have.property('fileName');",
+											"    pm.expect(responseData).to.have.property('contentType');",
+											"    pm.expect(responseData).to.have.property('fileType');",
+											"    pm.expect(responseData).to.have.property('fileEncoding');",
+											"    pm.expect(responseData).to.have.property('blobStorageReference');",
+											"    pm.expect(responseData).to.have.property('createdAt');",
+											"    pm.expect(responseData).to.have.property('updatedAt');",
+											"});",
+											"",
+											"pm.test(\"DocumentId corresponds with the createdDocumentID\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.id).to.contain(pm.collectionVariables.get(\"createdDocumentID\"))",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "testFile.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}/upload",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_002 - Verify user uploads no document with missing file",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"  pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"file error is recieved\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.errors.file).to.contain(\"The file field is required.\")",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "testFile.txt",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}/upload",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_003 - Verify user uploads no document with invalid format",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"  pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"file error is recieved\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.errors.file).to.contain(\"The file field is required.\")",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "test",
+											"type": "file",
+											"src": "testFile.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}/upload",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_004 - Verify user uploads no document with invalid HTTP method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {",
+											"  pm.response.to.have.status(405);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "testFile.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}}}/upload",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}}}",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_005 - Verify user updates document when exists",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"  pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.have.property('id');",
+											"    pm.expect(responseData).to.have.property('userId');",
+											"    pm.expect(responseData).to.have.property('fileName');",
+											"    pm.expect(responseData).to.have.property('contentType');",
+											"    pm.expect(responseData).to.have.property('fileType');",
+											"    pm.expect(responseData).to.have.property('fileEncoding');",
+											"    pm.expect(responseData).to.have.property('blobStorageReference');",
+											"    pm.expect(responseData).to.have.property('createdAt');",
+											"    pm.expect(responseData).to.have.property('updatedAt');",
+											"});",
+											"",
+											"pm.test(\"DocumentId corresponds with the createdDocumentID\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.id).to.contain(pm.collectionVariables.get(\"createdDocumentID\"))",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "testFileUpdated.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}/upload",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_006 - Verify user uploads no document with non existent document ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {",
+											"  pm.response.to.have.status(404);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "testFile.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{nonValidDocumentID}}/upload",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{nonValidDocumentID}}",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "UPDATE Document",
+					"item": [
+						{
+							"name": "TC_001 - Verify user updates expected document with valid data by its ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status is a valid status value\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData.status).to.contain('Success');",
+											"  pm.expect(responseData.status).to.exist;",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"testFile\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_002 - Verify user updates no document with non existent ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status is a valid status value\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  pm.expect(responseData.status).to.contain('NotFound');\r",
+											"  pm.expect(responseData.status).to.exist;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"testFile\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{nonValidDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{nonValidDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_003 - Verify user updates no document with missing ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"testFile\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_004 - Verify user updates no document with missing filename",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"FileName error is recieved\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData.errors.FileName).to.contain(\"The FileName field is required.\")\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n//   \"fileName\": \"testFile\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_005 - Verify user updates no document with missing file encoding",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"FileEncoding error is recieved\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData.errors.FileEncoding).to.contain(\"The FileEncoding field is required.\")\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n//   \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"testFile\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_006 - Verify user updates no document with missing content type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"ContenType error is recieved\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData.errors.ContentType).to.contain(\"The ContentType field is required.\")\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n//   \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"testFile\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_007 - Verify user updates no document with missing metadata",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Metadata error is recieved\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData.errors.Metadata).to.contain(\"The Metadata field is required.\")\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"testFile\",\n  \"fileType\": \"PDF\"\n//   \"metadata\": {\n//     \"test\": \"test\"\n//   }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_008 - Verify user updates no document with missing blob storage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"BlobStorageReference error is recieved\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData.errors.BlobStorageReference).to.contain(\"The BlobStorageReference field is required.\")\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n//   \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"testFile\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_009 - Verify user updates no document with invalid file type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"testFile\",\n  \"fileType\": \"TYPE\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_010 - Verify user updates no document with invalid file name",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": 1234,\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_011 - Verify user updates no document with invalid file encoding",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": 1234,\n  \"fileName\": \"test\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_012 - Verify user updates no document with invalid content type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": 1234,\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"test\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_013 - Verify user updates no document with invalid blob storage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": 1234,\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"test\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {\n    \"test\": \"test\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_014 - Verify user updates expected document with empty metadata",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status is a valid status value\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  pm.expect(responseData.status).to.contain('Success');\r",
+											"  pm.expect(responseData.status).to.exist;\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"test\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {}\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_015 - Verify user updates no document with invalid HTTP method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"blobStorageReference\": \"https://devsadidocuments.blob.core.windows.net/content/formula_three_technical_regulations.pdf\",\n  \"contentType\": \"test\",\n  \"fileEncoding\": \"testEncoding\",\n  \"fileName\": \"test\",\n  \"fileType\": \"PDF\",\n  \"metadata\": {}\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE Document",
+					"item": [
+						{
+							"name": "TC_001 - Verify user deletes expected document by its ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_002 - Verify user deletes no document with non existent ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(404);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.status).to.exist;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Status should show NotFound\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"    pm.expect(responseData.status).to.contain('NotFound')\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{nonValidDocumentID}}",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{nonValidDocumentID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_003 - Verify user deletes no document with invalid ID format",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"documentId error is received\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    pm.expect(responseData.errors.documentId).to.include(`The value 'INVALID' is not valid.`);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/INVALID",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"INVALID"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_004 - Verify user deletes no document with missing ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_005 - Verify user deletes no document with invalid HTTP method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {\r",
+											"  pm.expect(pm.response.code).to.equal(405);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "ChatBot",
+			"item": [
+				{
+					"name": "CREATE Conversation",
+					"item": [
+						{
+							"name": "TC_001 - Verify user creates conversation with valid user ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response schema includes required fields - id, userId, and createdAt\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  \r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData).to.include.all.keys('id', 'userId', 'createdAt');\r",
+											"});\r",
+											"\r",
+											"var responseBody = pm.response.text()\r",
+											"var jsonData = JSON.parse(responseBody)\r",
+											"pm.collectionVariables.set(\"createdConversationID\", jsonData.id)\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"{{userID}}\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_002 - Verify user creates no conversation with missing user ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "// {\n//   \"userId\": \"{{userID}}\"\n// }",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_003 - Verify user creates no conversation with invalid user ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"INVALID\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_004 - Verify user creates no conversation with invalid HTTP method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {\r",
+											"    pm.response.to.have.status(405);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"userId\": \"{{userID}}\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET Conversation",
+					"item": [
+						{
+							"name": "TC_001 - Verify user receives expected conversation by its ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"  pm.expect(pm.response.code).to.equal(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields - id, userId, and createdAt\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.id).to.exist;",
+											"  pm.expect(responseData.userId).to.exist;",
+											"  pm.expect(responseData.createdAt).to.exist;",
+											"});",
+											"",
+											"pm.test(\"ConversationID corresponds with the createdConversationID\", function () {",
+											"  const responseData = pm.response.json();",
+											"  pm.expect(responseData).to.be.an('object');",
+											"  pm.expect(responseData.id).to.contain(pm.collectionVariables.get(\"createdConversationID\"))",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations/:conversationId",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										":conversationId"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": "{{createdConversationID}}",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_002 - Verify user receives no conversation with non existent ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 404\", function () {",
+											"  pm.expect(pm.response.code).to.equal(404);",
+											"});",
+											"",
+											"pm.test(\"Not Found error is recieved\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.title).to.contain(\"Not Found\")",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations/:conversationId",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										":conversationId"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": "{{nonValidConversationID}}",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_003 - Verify user receives no conversation with invalid ID format",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {",
+											"  pm.expect(pm.response.code).to.equal(400);",
+											"});",
+											"",
+											"pm.test(\"conversationId error is recieved\", function () {",
+											"    const responseData = pm.response.json();",
+											"    pm.expect(responseData.errors.conversationId).to.contain(\"The value 'invalid' is not valid.\")",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations/:conversationId",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										":conversationId"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": "invalid",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_004 - Verify user receives no conversation with invalid HTTP method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {",
+											"  pm.expect(pm.response.code).to.equal(405);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations/:conversationId",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										":conversationId"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": "{{createdConversationID}}",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET ConversationS",
+					"item": [
+						{
+							"name": "TC_001 - Verify user receives all conversations",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response has the required fields - id, userId, createdAt, and updatedAt\", function () {",
+											"    const responseData = pm.response.json();",
+											"    ",
+											"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+											"    ",
+											"    responseData.forEach(function(item) {",
+											"        pm.expect(item).to.have.property('id');",
+											"        pm.expect(item).to.have.property('userId');",
+											"        pm.expect(item).to.have.property('createdAt');",
+											"        pm.expect(item).to.have.property('updatedAt');",
+											"    });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_001 - Verify user receives all conversations Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {",
+											"    pm.response.to.have.status(405);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "QUERY Conversation History",
+					"item": [
+						{
+							"name": "TC_001 - Verify user receives conversation history by its ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Id, conversationId, message, and createdAt fields should exist in the response\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.be.an('array');\r",
+											"    \r",
+											"    responseData.forEach(function(item) {\r",
+											"        pm.expect(item).to.be.an('object');\r",
+											"        pm.expect(item.id).to.exist.and.to.be.a('string');\r",
+											"        pm.expect(item.conversationId).to.exist.and.to.be.a('string');\r",
+											"        pm.expect(item.message).to.exist.and.to.be.a('string');\r",
+											"        pm.expect(item.createdAt).to.exist.and.to.be.a('string');\r",
+											"    });\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations/:conversationId/history",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										":conversationId",
+										"history"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": "{{conversationID}}",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_002 - Verify user receives no conversation history with non existent user ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations/:conversationId/history",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										":conversationId",
+										"history"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": "{{nonValidConversationID}}",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_003 - Verify user receives no conversation history with invalid format ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"  pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Error message conversation is not valid\", function () {\r",
+											"  var response = pm.response.json();\r",
+											"  pm.expect(response.errors.conversationId[0]).to.equal(\"The value 'INVALID' is not valid.\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations/:conversationId/history",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										":conversationId",
+										"history"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": "INVALID",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_004 - Verify user receives no conversation history with missing user ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 400\", function () {\r",
+											"  pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations/:conversationId/history",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										":conversationId",
+										"history"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TC_005 - Verify user receives no conversation history with invalid HTTP method",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 405\", function () {\r",
+											"  pm.response.to.have.status(405);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "text/plain"
+									}
+								],
+								"url": {
+									"raw": "{{chatbotAPIUrl}}/api/conversations/:conversationId/history",
+									"host": [
+										"{{chatbotAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"conversations",
+										":conversationId",
+										"history"
+									],
+									"variable": [
+										{
+											"key": "conversationId",
+											"value": "{{conversationID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"// const randomString = pm.variables.replaceIn('{{$randomFileName}}')\r",
+					"// pm.collectionVariables.set(\"createdFileName\",randomString);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "documentAPIUrl",
+			"value": "https://di-documentapi-dev.azurewebsites.net/",
+			"type": "string"
+		},
+		{
+			"key": "chatbotAPIUrl",
+			"value": "https://di-chatbot-api-dev.azurewebsites.net/",
+			"type": "string"
+		},
+		{
+			"key": "userID",
+			"value": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+			"type": "string"
+		},
+		{
+			"key": "nonValidUserID",
+			"value": "04b6ef20-1111-4cba-2351-08dc8fb810bd",
+			"type": "string"
+		},
+		{
+			"key": "createdFileName",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "createdDocumentID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "nonValidDocumentID",
+			"value": "ce555268-bf24-4a74-8d01-a34923fc1a80",
+			"type": "string"
+		},
+		{
+			"key": "createdConversationID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "conversationID",
+			"value": "04b6ef20-cc21-4cba-2351-08dc8fb810bd",
+			"type": "string"
+		},
+		{
+			"key": "nonValidConversationID",
+			"value": "04b6ef20-1111-4cba-2351-08dc8fb810bd",
+			"type": "string"
+		}
+	]
+}
