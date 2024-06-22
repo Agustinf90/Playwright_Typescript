@@ -1678,6 +1678,72 @@
 							},
 							"response": []
 						},
+						{
+							"name": "TC_001 - Verify user uploads document with valid data",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Response has the required fields\", function () {\r",
+											"    const responseData = pm.response.json();\r",
+											"    \r",
+											"    pm.expect(responseData).to.have.property('id');\r",
+											"    pm.expect(responseData).to.have.property('userId');\r",
+											"    pm.expect(responseData).to.have.property('fileName');\r",
+											"    pm.expect(responseData).to.have.property('contentType');\r",
+											"    pm.expect(responseData).to.have.property('fileType');\r",
+											"    pm.expect(responseData).to.have.property('fileEncoding');\r",
+											"    pm.expect(responseData).to.have.property('blobStorageReference');\r",
+											"    pm.expect(responseData).to.have.property('createdAt');\r",
+											"    pm.expect(responseData).to.have.property('updatedAt');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"DocumentId corresponds with the createdDocumentID\", function () {\r",
+											"  const responseData = pm.response.json();\r",
+											"  pm.expect(responseData).to.be.an('object');\r",
+											"  pm.expect(responseData.id).to.contain(pm.collectionVariables.get(\"createdDocumentID\"))\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "testFile.txt"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{documentAPIUrl}}/api/Documents/{{createdDocumentID}}/upload",
+									"host": [
+										"{{documentAPIUrl}}"
+									],
+									"path": [
+										"api",
+										"Documents",
+										"{{createdDocumentID}}",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
 				{
 					"name": "UPDATE Document",
 					"item": [
