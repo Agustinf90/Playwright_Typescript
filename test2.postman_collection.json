@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "874e9be8-64a1-4a44-b72d-42010621413f",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20024829",
+		"_collection_link": "https://red-shuttle-428052.postman.co/workspace/UL~e82ed90d-5f91-41e3-a423-058bcf75c15f/collection/20024829-874e9be8-64a1-4a44-b72d-42010621413f?action=share&source=collection_link&creator=20024829"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "testFile.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://di-documentapi-dev.azurewebsites.net//api/Documents/bad5d46e-fcb7-41d5-a28d-3139ba3c4f39/upload",
+					"protocol": "https",
+					"host": [
+						"di-documentapi-dev",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"",
+						"api",
+						"Documents",
+						"bad5d46e-fcb7-41d5-a28d-3139ba3c4f39",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
